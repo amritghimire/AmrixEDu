@@ -1,0 +1,126 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>AmriS Plus 2</title>
+        <link rel="stylesheet" href="vanilla.min.css" data-jqt-theme>
+<meta name="viewport" content="initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+ <script src="Balance_Chemical_Equation.js"></script><noscript><h1><font color='red'> Error! Javascript must be enabled.</font></h1></noscript><script>
+randomplaceholder();</script> 
+        <!-- Either, (1) Zepto:  Un-comment these 2 lines (order matters)  -->
+        <script src="zepto.min.js" type="text/javascript" charset="utf-8"></script>
+        <script type="text/javascript" charset="utf-8">
+              $('a[target="_blank"]').bind('click', function() {
+                    if (confirm('This link opens in a new window.')) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                });
+                </script>
+ <style type="text/css" media="screen">
+            #jqt.fullscreen #home.info {
+                display: none;
+            }
+            div#jqt #about {
+                padding: 100px 10px 40px;
+                text-shadow: rgba(0, 0, 0, 0.3) 0px -1px 0;
+                color: #999;
+                font-size: 13px;
+                text-align: center;
+                background: #161618;
+            }
+            div#jqt #about p {
+                margin-bottom: 8px;
+            }
+            div#jqt #about a {
+                color: #fff;
+                font-weight: bold;
+                text-decoration: none;
+            }
+        </style>
+        <script>
+function init(){
+count=0;
+guess="";
+while(guess.length<4){
+g=generateRandomInt(10)-1;
+if(guess.indexOf(g.toString())<0)
+guess+=g;
+}
+}
+function generateRandomInt(intMax) {
+    return Math.floor((Math.random() * intMax) + 1);
+}
+function onKey(a){
+ln=a.value;
+lnlst=ln[ln.length-1];
+lnWrd=ln.substr(0,ln.length-1);
+if((lnWrd.indexOf(lnlst)>=0)||("0123456789".indexOf(lnlst)<0))
+a.value=lnWrd;
+if(a.value.length==4){
+proceed(a);
+a.value="";
+}
+}
+function proceed(a){
+n=a.value;
+m=Number(n);
+noOfT=0;
+noOfC=0;
+esc="";
+for(i=0;i<=3;i++){
+if(guess[i]==n[i]){
+noOfT+=1;
+esc+=n[i];
+}else if((guess.indexOf(n[i])>=0)&&(esc.indexOf(n[i])<0)){
+noOfC+=1;
+}
+}
+toDisplay=n+"   |  "+repeat("√",noOfT)+repeat("X",noOfC)+" ";
+if(noOfT+noOfC==0)
+toDisplay+=".";
+toDisplay+="<br/>";
+count++;
+if(count==7){
+toDisplay+="Turn over :The guess was  "+guess+" <br/>: <a href='#'>Replay</a><br/><hr/>";
+init();
+}
+if(noOfT==4){
+toDisplay+="Game over : <a href='#'>Replay</a><br/><hr/></br>";
+init();
+}
+p=document.getElementById("ahead");
+p.innerHTML+=toDisplay;
+}
+function repeat(p,q){
+if(q==0) return "";
+TRq="<span style='color:#007aff'>";
+for(var y=0;y<q;y++){
+TRq+=p;
+}
+TRq+="</span>";
+return TRq;
+}
+</script>
+    </head>
+    <body>
+    <div id="jqt" class="">
+ <div id="home" class="current">
+          <div class="toolbar">
+                    <h1>AmriS PluS 2 </h1>
+                    <a class="back" href="home.html">Home</a></div>   <div id="about" class="selectable">
+                <h1>Game   <sub>by</sub></h1><h2>AmRit GhiMire</h2><br/>
+<div style="color:#ffffff">I have a Number in my mind.<br/>
+Find it with position in 7 guess 
+<br/>
+I will give you hint each time by providing <br/>"√" for each no with correct position <br/>"X" for each digit within guess but misplace<br/>"." for the no without any digit in my guess.
+<br/>Lets start it<br/><br/>
+</div>
+<div id="ahead" style="color:#31ff19"></div><input type="number" id="a" onkeyup="javascript:onKey(this)"><script>
+init();
+</script>    
+                    </div>
+                    </div></div></body></html>

@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Tools By Amrit Ghimire</title>
+        <link rel="stylesheet" href="vanilla.min.css" data-jqt-theme>
+<meta name="viewport" content="initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+        <!-- Either, (1) Zepto:  Un-comment these 2 lines (order matters)  -->
+        <script src="zepto.min.js" type="text/javascript" charset="utf-8"></script>
+        <script type="text/javascript" charset="utf-8">
+              $('a[target="_blank"]').bind('click', function() {
+                    if (confirm('This link opens in a new window.')) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                });
+                </script>
+ <style type="text/css" media="screen">
+            #jqt.fullscreen #home.info {
+                display: none;
+            }
+            div#jqt #about {
+                padding: 100px 10px 40px;
+                text-shadow: rgba(0, 0, 0, 0.3) 0px -1px 0;
+                color: #999;
+                font-size: 13px;
+                text-align: center;
+                background: #161618;
+            }
+            div#jqt #about p {
+                margin-bottom: 8px;
+            }
+            div#jqt #about a {
+                color: #fff;
+                font-weight: bold;
+                text-decoration: none;
+            }
+        </style>
+    </head>
+    <body>
+    <div id="jqt" class="">
+ <div id="home" class="current">
+                <div class="toolbar"><a href="../index.php" class="back">Up</a>&nbsp;
+                    <h1>Tools By Amrit</h1>
+                    <a class="button slideup" id="infoButton" href="about.html">About</a>
+                </div>
+                <div class="scroll">
+                    <ul class="rounded">
+                        <li><a href="lpp.html">Linear Programming Problem</li>
+                        <li><a href="balance.html">Balance Chemical Equation</a></li>
+                        <li><a href="derivative.html">Derivative</a></li>
+                        <li><a href="equation.html">Solve Equation</li>
+                              <li><a href="game.html">Number Guessing Game</li>
+                        <li><a href="about.html">About</a> </li>
+                        <li><a href="http://ranjitghimire.com.np/amrixedu">Download as app</li>
+                     
+                    </ul>
+                   <br/><br/> <h2>External Links</h2>
+                    <ul class="rounded">
+                        <li class="forward"><a target="_blank" href="http://ranjitghimire.com.np/">Homepage</a></li>
+                        <li class="forward"><a target="_blank" href="http://twitter.com/iamritghimire">Twitter</a></li>
+                        <li class="forward"><a target="_blank" href="http://facebook.com/iamritghimire">Facebook</a></li>
+                    </ul>
+                    
+              
+                </div>
+</div>
+</div>
+ <script>
+      if (window.navigator.standalone) {
+        $("meta[name='apple-mobile-web-app-status-bar-style']").remove();
+      }
+    </script>
+</html>
