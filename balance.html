@@ -1,62 +1,77 @@
 <!doctype html>
 <html>
-    <head>
-        <meta charset="UTF-8" />
-        <title>AmriS Plus 2</title>
-        <link rel="stylesheet" href="vanilla.min.css" data-jqt-theme>
-<meta name="viewport" content="initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
-        <meta name="apple-mobile-web-app-capable" content="yes">
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
- <script src="Balance_Chemical_Equation.js"></script><noscript><h1><font color='red'> Error! Javascript must be enabled.</font></h1></noscript><script>
-randomplaceholder();</script> 
-        <!-- Either, (1) Zepto:  Un-comment these 2 lines (order matters)  -->
-        <script src="zepto.min.js" type="text/javascript" charset="utf-8"></script>
-        <script type="text/javascript" charset="utf-8">
-              $('a[target="_blank"]').bind('click', function() {
-                    if (confirm('This link opens in a new window.')) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                });
-                </script>
- <style type="text/css" media="screen">
-            #jqt.fullscreen #home.info {
-                display: none;
-            }
-            div#jqt #about {
-                padding: 100px 10px 40px;
-                text-shadow: rgba(0, 0, 0, 0.3) 0px -1px 0;
-                color: #999;
-                font-size: 13px;
-                text-align: center;
-                background: #161618;
-            }
-            div#jqt #about p {
-                margin-bottom: 8px;
-            }
-            div#jqt #about a {
-                color: #fff;
-                font-weight: bold;
-                text-decoration: none;
-            }
-        </style>
-    </head>
-    <body onload='javascript:randomplaceholder();' >
-    <div id="jqt" class="">
- <div id="home" class="current">
-          <div class="toolbar">
-                    <h1>AmriS PluS 2 </h1>
-                    <a class="back" href="home.html">Home</a></div>   <div id="about" class="selectable">
-             <h2>Chemical Equation Balance</h2>  by <a href="http://www.fb.com/amrit.ghimire13"><h1>Amrit Ghimire Ranjit</h1></a><br/>
-<a href="http://amrit.hol.es/cms">Contact me </a></br/><hr/><form class="form">Type the equation to bAlance:<input type="text" placeholder=' ' id="inputFormula"><input type="button" class="redButton" value="Balance" onclick="javascript:balance(document.getElementById('inputFormula').value);"> <br><u><a href="javascript:random();">Random Example</a></u>
-<span color="red"><div id="message"></div></span><div id="balanced"></div><div id="codeOutput"></div><br><br><a href="https://plus.google.com/103744491502270929417?rel=author">Google</a>
- </div>
-</div>
-</div>
- <script>
-      if (window.navigator.standalone) {
-        $("meta[name='apple-mobile-web-app-status-bar-style']").remove();
-      }
+<head>
+    <meta charset="UTF-8"/>
+    <title>Solve it Easy</title>
+    <link rel="stylesheet" href="vanilla.min.css" data-jqt-theme>
+    <meta name="viewport" content="initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <script src="Balance_Chemical_Equation.js"></script>
+    <noscript><h1><span style="color: red; "> Error! Javascript must be enabled.</span></h1></noscript>
+    <script>
+        randomplaceholder();</script>
+    <!-- Either, (1) Zepto:  Un-comment these 2 lines (order matters)  -->
+    <script src="zepto.min.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" charset="utf-8">
+        $('a[target="_blank"]').bind('click', function () {
+            return !!confirm('This link opens in a new window.');
+        });
     </script>
+    <style type="text/css" media="screen">
+        #jqt.fullscreen #home.info {
+            display: none;
+        }
+
+        div#jqt #about {
+            padding: 100px 10px 40px;
+            text-shadow: rgba(0, 0, 0, 0.3) 0 -1px 0;
+            color: #999;
+            font-size: 13px;
+            text-align: center;
+            background: #161618;
+        }
+
+        div#jqt #about p {
+            margin-bottom: 8px;
+        }
+
+        div#jqt #about a {
+            color: #fff;
+            font-weight: bold;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body onload='randomplaceholder();'>
+<div id="jqt" class="">
+    <div id="home" class="current">
+        <div class="toolbar">
+            <h1>Solve It Easy </h1>
+            <a class="back" href="index.html">Home</a></div>
+        <div id="about" class="selectable">
+            <h2>Chemical Equation Balance</h2> by <a href="http://www.fb.com/iamritghimire"><h1>Amrit Ghimire
+            Ranjit</h1></a><br/>
+            <a href="http://amritghimire.me/">Contact me </a><br/>
+            <hr/>
+            <form class="form">Type the equation to bAlance:<br>
+                <input type="text" placeholder=' ' id="inputFormula"><br>
+                <input
+                        type="button" class="blueButton" value="Balance" style="align-self: center"
+                        onclick="balance(document.getElementById('inputFormula').value);"> <br><u><a
+                        href="javascript:random();">Random Example</a></u>
+                <div id="message" style="color: red"></div>
+                <div id="balanced"></div>
+                <div id="codeOutput"></div>
+                </form>
+                <br>
+        </div>
+    </div>
+</div>
+<script>
+    if (window.navigator.standalone) {
+        $("meta[name='apple-mobile-web-app-status-bar-style']").remove();
+    }
+</script>
+</body>
 </html>

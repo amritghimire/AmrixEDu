@@ -1,336 +1,391 @@
 <!doctype html>
 <html>
-    <head>
-        <meta charset="UTF-8" /> <meta name="viewport" content=""> 
-        <title>AmriS Plus 2</title>
-        <link rel="stylesheet" href="vanilla.min.css" data-jqt-theme>
-<meta name="viewport">
-        <meta name="apple-mobile-web-app-capable" content="yes">
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="">
+    <title>AmriS Plus 2</title>
+    <link rel="stylesheet" href="vanilla.min.css" data-jqt-theme>
+    <meta name="viewport">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-        <!-- Either, (1) Zepto:  Un-comment these 2 lines (order matters)  -->
-        <script src="zepto.min.js" type="text/javascript" charset="utf-8"></script>
-        <script type="text/javascript" charset="utf-8">
-              $('a[target="_blank"]').bind('click', function() {
-                    if (confirm('This link opens in a new window.')) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                });
-                </script>
-                <script>
-function maxcl(){
-document.getElementById("max").innerHTML="maximized";
-document.getElementById("max2").innerHTML="maximize";
-document.getElementById("min").innerHTML="minimize";
-document.getElementById("sign3").innerHTML="&lt;=";
-document.getElementById("sign2").innerHTML="&lt;=";
-document.getElementById("sign1").innerHTML="&lt;=";
-document.getElementById("xx1").innerHTML='x';
-document.getElementById("xx2").innerHTML='x';
-document.getElementById("xx3").innerHTML='x';
-document.getElementById("xxO").innerHTML='x';
-document.getElementById("yy1").innerHTML='y';
-document.getElementById("yy2").innerHTML='y';
-document.getElementById("yy3").innerHTML='y';
-document.getElementById("yyO").innerHTML='y';
-document.getElementById("pp").innerHTML="P";
-document.getElementById('third').innerHTML='Enable third inequality<br/>';
- return;
-}function mincl(){
-document.getElementById("max").innerHTML="maximize";
-document.getElementById("max2").innerHTML="minimize";
-document.getElementById("min").innerHTML="minimized";
-document.getElementById("sign3").innerHTML="&gt;=";
-document.getElementById("sign2").innerHTML="&gt;=";
-document.getElementById("sign1").innerHTML="&gt;=";
- document.getElementById("xx1").innerHTML='u';
-document.getElementById("xx2").innerHTML='u';
-document.getElementById("xx3").innerHTML='u';
-document.getElementById("xxO").innerHTML='u';
-document.getElementById("yy1").innerHTML='v';
-document.getElementById("yy2").innerHTML='v';
-document.getElementById("yy3").innerHTML='v';
-document.getElementById("yyO").innerHTML='v';
-document.getElementById('pp').innerHTML='W';
-document.getElementById('third').innerHTML='Third equation not available in minimization<br>';
-return;
-}
-function onchecks(bo){
-if(bo==true){
-if(document.getElementById('minc').checked==false){
-document.getElementById("thirdr").innerHTML='<input name="a3" id="a3" type="text" value="5" size="5"><span id="xx3">x</span>+ <input name="b3" id="b3" type="text" value="b" size="5"><span id="yy3">y</span><span name="" id="sign3">&lt;=</span><input name="c3" id="c3" type="text" value="c" size="5">';
-}else{
-document.getElementById('thirden').checked=false;
-}
-}else{
-document.getElementById("thirdr").innerHTML=" ";
-}
-}
-function sub(ra){
-return '<sub>'+ ra+'</sub>';
-}
-</script><script>
-
-function calculate(){
-var textr='<span id="language" class="shown">Maximize {1}<br>subject to <br/>{2}<br/>{3} <br/>{4} <br/>along x&gt;=0,y&gt=0+ <br/>This is a LPP and moreover a standard maximization problem.<br/>Now to solve this LPP by Simplex method ,we introduce slack variables u<sub>1</sub>,u<sub>2</sub>{41}  such that we get the system <br/>{5}<br/>{6} <br/>{7} <br/>{8}<br/>along x&gt;=0,y&gt;=0. <br/>where all the variable x,y and assumed u are non-negative .<br/>Restating the system in canonical form or standard form we have <br/>{9}...........<br/>{10}........<br/>{11}...... <br/>{12}.........<br/>Now to make the manipulation easier This system is represented by following initial simplex tableau.<br> {iteration} As all the entries in the bottom row are non negative the optimal solution is obtained {13}';
-var a1= Number(document.getElementById("a1").value);
-var a2= Number(document.getElementById("a2").value);
-if(tEE()) var a3= Number(document.getElementById("a3").value);
-else var a3=0;
-var b1= Number(document.getElementById("b1").value);
-var b2= Number(document.getElementById("b2").value);
-if(tEE()) var b3= Number(document.getElementById("b3").value); else var b3=0;
-var c1= Number(document.getElementById("c1").value);
-var c2= Number(document.getElementById("c2").value);
-if(tEE()) var c3= Number(document.getElementById("c3").value); else var c3=0;
-var OA= Number(document.getElementById("OA").value);
-var OB= Number(document.getElementById("OB").value);
-if(isMin()){
-echor("For the given standard minimization problem,we can form a augumented matrix.After transposing the matrix,the following  LPP standard maximize problem  of dual problem is obtained.");
-document.getElementById('thirden').checked=false;
-var c=b1;
-b1=a2;
-a2=c;
-c=c1;
-b1=OA;
-a2=c;
-c=c2;
-b1=OB;
-a2=c;
-}
-var br="<br/>";
-textr = textr.replace('{1}',' '+'P= '+OA.toString()+'x +'+OB.toString()+"y"+'');
-textr = textr.replace('{2}',''+a1.toString()+'x + '+b1.toString()+'y &lt; ='+c1.toString()+' '+br);
- textr = textr.replace("{3}",''+a2.toString()+'x + '+b3.toString()+'y &lt;= '+c2.toString()+' '+br+'');
-if(tEE()) {
-textr = textr.replace("{4}",''+a3.toString()+'x + '+b3.toString()+'y &lt; ='+c3.toString()+' '+br+'');
-}else{
-textr = textr.replace("{4}"," ");
-}
-if(tEE()) textr = textr.replace("{41}","and u<sub>3</sub>");
-else
-textr = textr.replace("{41}",' ');
-textr = textr.replace("{5}",a1.toString()+'x + '+b1.toString()+'y +u'+sub(1)+'= '+c1.toString()+' '+br+'');
- textr = textr.replace('{6}',a2.toString()+'x +'+b2.toString()+'y +u'+sub(2)+'= '+c2.toString()+' '+br+'');
-if(tEE())  
-textr = textr.replace("{7}",''+a3.toString()+'x + '+b3.toString()+'y +u'+sub(3)+'=  '+c3.toString()+' '+br+'');
-else
-textr = textr.replace("{7}"," ");
- textr = textr.replace("{8}",' -'+OA.toString()+'x - '+OB.toString()+'y +Z=0 '+br+'');
-textr = textr.replace("{9}",a1.toString()+'x + '+b1.toString()+'y +u'+sub(1)+'+0u'+sub(2)+(tEE()?'+0u'+sub(3):' ')+'+0P'+'= '+c1.toString()+' '+br+'');
- textr = textr.replace('{10}',a2.toString()+'x +'+b2.toString()+'y +0u'+sub(1)+'+1u'+sub(2)+(tEE()?'+0u'+sub(3):' ')+'+0P'+'='+c2.toString()+' '+br+'');
-if(tEE())  
-textr = textr.replace("{11}",''+a3.toString()+'x + '+b3.toString()+'y +0u'+sub(1)+'+0u'+sub(2)+(tEE()?'+1u'+sub(3):' ')+'+0P'+'='+c3.toString()+' '+br+'');
-else
-textr = textr.replace("{11}"," ");
- textr = textr.replace("{12}",' -'+OA.toString()+'x - '+OB.toString()+'y +u'+ sub(1)+'+0u'+sub(2)+(tEE()?'+0u'+sub(3):' ')+'+1P=0 '+br+'');
-OA=0-OA;
-OB=0-OB;
-if(tEE()){
-x=[a1,a2,a3,OA];
-y= [b1,b2,b3,OB];
-u1=[1,0,0,0];
-u2=[0,1,0,0];
-u3=[0,0,1,0];
-p=[0,0,0,1];
-RHS=[c1,c2,c3,0];
-bv=["u1","u2","u3"];
-}else{
-x= [a1,a2,0,OA];
-y= [b1,b2,0,OB];
-u1=[1,0,0,0];
-u2=[0,1,0,0];
-u3=[0,0,0,0];
-p=[0,0,0,1];
-RHS=[c1,c2,0,0];
-bv=["u1","u2",null];
-}
-tabl=maketable(x,y,u1,u2,p,RHS,bv,((tEE())?u3:null));
-tabl+="{iteration}";
-textr = textr.replace("{iteration}",tabl);
-var iterat=' ';
-while(x[3]<0 ||y[3]<0){
-iterat+=makeText(x,y,RHS);
-if(tEE())
-infor=getInfoFromTable(x,y,u1,u2,p,RHS,bv,u3);
-else
-infor=getInfoFromTable(x,y,u1,u2,p,RHS,bv,null);
-if(infor[0]!=1){
-var n=infor[1];
-iterat += "Now to make pivot element 1,performing the row operation R"+sub(n)+"-->(1/"+infor[0].toString()+')R'+sub(n)+' , we have'+br;
-x[n]=x[n]/infor[0];
-y[n]/=infor[0];
-u1[n]/=infor[0];
-u2[n]/=infor[0];
-p[n]/=infor[0];
-RHS[n]/=infor[0];
-if(tEE()) u3[n]/=infor[0];
-tably=maketable(x,y,u1,u2,p,RHS,bv,((tEE())?u3:null));
-iterat+=tably;
-}
-if(tEE())
-infore=getInfoFromTable(x,y,u1,u2,p,RHS,bv,u3);
-else
-infore=getInfoFromTable(x,y,u1,u2,p,RHS,bv,null);
-n=infore[1];
-pc=infore[2];
-bv[n]=xy(pc);
-if(n==0) toDoTask=[1,2,3];
-if(n==1) toDoTask=[0,2,3];
-if(n==2) toDoTask=[0,1,3];
-iterat+="Now performing";
-for(i=0;i<toDoTask.length;i++){
-row=toDoTask[i];
-if(!(row==2 && !(tEE()))){
-iterat+=" ,R"+sub(row+1)+"-> R"+sub(row+1)+"-"+((pc==1)?x[row]:y[row])+"R"+sub(n+1);
- u1[row]=u1[row]-(((pc==1)?x[row]:y[row])*u1[n]);
-u2[row]=u2[row]-(((pc==1)?x[row]:y[row])*u2[n]);
-var tD=((pc==1)?x[row]:y[row]);
-RHS[row]=RHS[row]-(tD*RHS[n]);
-p[row]=p[row]-(((pc==1)?x[row]:y[row])*p[n]);
-if(tEE()){
-u3[row]=u2[row]-(((pc==1)?x[row]:y[row])*u3[n]);
- }
-x[row]=x[row]-(((pc==1)?x[row]:y[row])*x[n]);
-y[row]=y[row]-(((pc==1)?x[row]:y[row])*y[n]);
-}
-}
-iterat+=",We obtain following simplex tableau";
-tabl=maketable(x,y,u1,u2,p,RHS,bv,((tEE())?u3:null));
-// tabl+="{iteration}";
-iterat+=tabl;
-}
-textr=textr.replace("{iteration}",iterat);
-if(isMin()){
-textr=textr.replace('{13}','As all the entries in bottom row are non-negative,This tableau gives optimal solution+Hence by principal of duality the minimum value is W='+RHS[3].toString()+'at ');
-textr+="x="+u1[3].toString()+',y='+u2[3];
-}else{
-textr=textr.replace('{13}','As all the entries in bottom row are non-negative,This tableau gives optimal solution Hence the maximum value is P='+RHS[3].toString()+' at ');
-for(ccc=0;ccc<bv.length;ccc++){
-var te=bv[ccc]+' = '+RHS[ccc].toString()+br;
-textr+=te;
-}
-}
-echor(textr);
-}
-function echor(a){
-a=a.replace('{iteration}','. ');
-a=a.replace('- -','+');
-a=a.replace('--','+');
-a=a.replace('+-','-');
-document.getElementById('result').innerHTML+=a;
-}
-function maketable(x,y,u1,u2,p,RHS,bv,u3){
-var rrr='<table width="776" height="380" border="3px solid" cellpadding="3px" cellspacing="3px" class="frame" id="Table_01"><tr><td>Basic variable</td><td>x</td><td>y</td><td>u'+sub(1)+'</td><td>u'+sub(2)+'</td>'+(tEE()?'<td>u'+sub(3)+'</td>':'')+'<td>P</td><td>RHS</td></tr><tr><td>'+bv[0].toString()+'</td><td>'+x[0].toString()+'</td><td>'+y[0].toString()+'</td><td>'+u1[0].toString()+'</td><td>'+u2[0].toString()+'</td>'+(tEE()?'<td>'+u3[0].toString()+'</td>':'')+'<td>'+p[0].toString()+'</td><td>'+RHS[0].toString()+'</td></tr><tr><td>'+bv[1].toString()+'</td><td>'+x[1].toString()+'</td><td>'+y[1].toString()+'</td><td>'+u1[1].toString()+'</td><td>'+u2[1].toString()+'</td>'+(tEE()?'<td>'+u3[1].toString()+'</td>':'')+'<td>'+p[1].toString()+'</td><td>'+RHS[1].toString()+'</td></tr>'+(tEE()?'<tr><td>'+bv[2].toString()+'</td><td>'+x[2].toString()+'</td><td>'+y[2].toString()+'</td><td>'+u1[3].toString()+'</td><td>'+u2[2].toString()+'</td><td>'+u3[2].toString()+'</td><td>'+p[2].toString()+'</td><td>'+RHS[2].toString()+'</td></tr>':'')+'<tr><td> </td><td>'+x[3].toString()+'</td><td>'+y[3].toString()+'</td><td>'+u1[3].toString()+'</td><td>'+u2[3].toString()+'</td>'+(tEE()?'<td>'+u3[3].toString()+'</td>':'')+'<td>'+p[3].toString()+'</td><td>'+RHS[3].toString()+'</td></tr></table>';
-return rrr;
-}
-
-function tEE(){
-return document.getElementById('thirden').checked;
-}
-
-function nthTerm(aa){
-if(aa==1) return ' first ';
-if(aa==2) return 'second';
-if(aa==3) return 'third';
-return aa.toString()+'<sup>th</sup>';
-}
-function getMin(q,w,e){
-if((q<=w)&&(q<=e)) return q;
-if((w<=q)&&(w<=e)) return w;
-return e;
-}
-
-function makeText(x,y,RHS){
-r1=(RHS[0]/((x[3]<y[3])?x[0]:y[0]))
-r2=(RHS[1]/((x[3]<y[3])?x[1]:y[1]))
-if(tEE()) r3=(RHS[2]/((x[3]<y[3])?x[2]:y[2]));
-else r3=9999999;
-var toret='From this tableau the BFS(basic Feasible solution ) is not the optimal solution since there exists negative entry in bottom row.<br/>Since '+((x[3]<y[3])?x[3].toString():y[3].toString())+' is the most negative indicator ,'+((x[3]<y[3])?'x':'y')+' is the pivot column and   '+((x[3]<y[3])?'x':'y')+' is the entering variable .Dividing the last element RHS in each row by corresponding entry in pivot column we obtain <br>'+RHS[0].toString()+'/ '+((x[3]<y[3])?x[0]:y[0]).toString()+' = '+r1.toString()+', <br>'+RHS[1].toString()+'/ '+((x[3]<y[3])?x[1]:y[1])+' = '+r2.toString()+'<br>,';
-if(tEE()){
-toret+=RHS[2].toString()+'/'+((x[3]<y[3])?x[2]:y[2])+' = '+r3.toString()+'<br>,';
-}
-var min=getMin(r1,r2,r3);
-toret+=' Since '+min.toString()+' is the minimum ratio and '+nthTerm(getMinPos(r1,r2,r3)).toString()+' row is the pivot row.';
-mP=getMinPos(r1,r2,r3);
-toret+=' So '+((x[3]<y[3])?x[mP-1]:y[mP-1])+' is the pivot element as it lies in pivot column and pivot row.';
-return toret;
-}
-function getMinPos(q,w,e){
-if((q<=w)&&(q<=e)) return 1;
-if((w<=q)&&(w<=e)) return 2;
-return 3;
-}
-function getInfoFromTable(x,y,u1,u2,p,RHS,bv,u3){
-r1=(RHS[0]/((x[3]<y[3])?x[0]:y[0]))
-r2=(RHS[1]/((x[3]<y[3])?x[1]:y[1]))
-if(tEE()) r3=(RHS[2]/((x[3]<y[3])?x[2]:y[2]));
-else r3=9999999;
-var pc= ((x[3]<y[3])?'1':'2');
-var min=getMin(r1,r2,r3);
-var pr=getMinPos(r1,r2,r3)-1;
-var pe=((x[3]<y[3])?x[mP-1]:y[mP-1]);
-var treq=[pe,pr,pc]
-return treq;
-}
-function isMin(){
-// pre alery
-return document.getElementById('minc').checked;
-}
-function xy(a){
-return ((a==1)?'x':'y');
-}
-</script> 
- <style type="text/css" media="screen">
-            #jqt.fullscreen #home.info {
-                display: none;
+    <!-- Either, (1) Zepto:  Un-comment these 2 lines (order matters)  -->
+    <script src="zepto.min.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" charset="utf-8">
+        $('a[target="_blank"]').bind('click', function () {
+            if (confirm('This link opens in a new window.')) {
+                return true;
+            } else {
+                return false;
             }
-            div#jqt #about {
-                padding: 100px 10px 40px;
-                text-shadow: rgba(0, 0, 0, 0.3) 0px -1px 0;
-                color: #999;
-                font-size: 13px;
-                text-align: center;
-                background: #161618;
-            }
-            div#jqt #about p {
-                margin-bottom: 8px;
-            }
-            div#jqt #about a {
-                color: #fff;
-                font-weight: bold;
-                text-decoration: none;
-            }
-        </style>
-    </head>
-    <body>-
-    <div id="jqt" class="">
- <div id="home" class="current" >
-          <div class="toolbar">
-                    <h1>AmriS PluS 2 </h1>
-                    <a class="back" href="home.html">Home</a></div> 
-                    <div class="scroll">
-                   
-                   <form id="Amrix" action="LPR.php" class="form">
-<input type="radio" name="maxormin" value='max' id="maxc" onclick="javascript:maxcl();" checked="true"><span name='' id='max'>Maximized</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type='radio'  value='min' name='maxormin' onclick="javascript:mincl();" name='' id="minc"><span name='' id='min'>minimize</span><br/> 
-<input name='a1' id='a1' type="number" size="5">
-<span id='xx1'>x</span>+ <input name='b1' id='b1' type="number" size="5"><span id='yy1'>y</span><span name='sign2' id="sign2">&lt;=</span><input name='c1' id='c1' type="number" size="5">
-<br/><br/>   <input name='a2' id='a2' type="number" size="5">
-<span id='xx2'>x</span>+ <input name='b2' id='b2' type="number" size="5"><span id='yy2'>y</span><span name='' id="sign1">&lt;=</span><input name='c2' id='c2' type="number" size="5">
-</br><br/>   <input type="checkbox" name='thirden' id="thirden" checked="true" onclick="javascript:onchecks(this.checked);"><span name='' id="third">Enable third inequality<br/></span><span id="thirdr" style="">
-<input name='a3' id='a3' type="number" size="5">
-<span id='xx3'>x</span>+ <input name='b3' id='b3' type="number" size="5"><span id='yy3'>y</span><span id="sign3" >&lt;=</span><input name='c3' id='c3' type="number" size="5"></span>
-</br><br/>   Objective function to <span id="max2">maximize</span></br>   <span id="pp" > P</span>= <input type="number" name='OA' id="OA" size="5"><span id='xxO'>x</span>+ <input type="number" name='OB' id="OB" size="5"><span id='yyO'>y</span></br> </br>  <hr/><input type="button" value='Calculate' class="redButton" onclick="javascript:calculate();"><br/></br><hr>
-<input type="checkbox" checked="true" name='showlang' id="showlang" >Show language</div></form><div id='result'></div><hr/>
- <script src="tips.js"></script> 
- <div id="info" class="info">Loading Tips<script>inFo("lpp");</script></div> 
- </div>
-</div>
- <script>
-      if (window.navigator.standalone) {
-        $("meta[name='apple-mobile-web-app-status-bar-style']").remove();
-      }
+        });
     </script>
+    <script>
+        function maxcl() {
+            document.getElementById("max").innerHTML = "maximized";
+            document.getElementById("max2").innerHTML = "maximize";
+            document.getElementById("min").innerHTML = "minimize";
+            document.getElementById("sign3").innerHTML = "&lt;=";
+            document.getElementById("sign2").innerHTML = "&lt;=";
+            document.getElementById("sign1").innerHTML = "&lt;=";
+            document.getElementById("xx1").innerHTML = 'x';
+            document.getElementById("xx2").innerHTML = 'x';
+            document.getElementById("xx3").innerHTML = 'x';
+            document.getElementById("xxO").innerHTML = 'x';
+            document.getElementById("yy1").innerHTML = 'y';
+            document.getElementById("yy2").innerHTML = 'y';
+            document.getElementById("yy3").innerHTML = 'y';
+            document.getElementById("yyO").innerHTML = 'y';
+            document.getElementById("pp").innerHTML = "P";
+            document.getElementById('third').innerHTML = 'Enable third inequality<br/>';
+            return;
+        }
+        function mincl() {
+            document.getElementById("max").innerHTML = "maximize";
+            document.getElementById("max2").innerHTML = "minimize";
+            document.getElementById("min").innerHTML = "minimized";
+            document.getElementById("sign3").innerHTML = "&gt;=";
+            document.getElementById("sign2").innerHTML = "&gt;=";
+            document.getElementById("sign1").innerHTML = "&gt;=";
+            document.getElementById("xx1").innerHTML = 'u';
+            document.getElementById("xx2").innerHTML = 'u';
+            document.getElementById("xx3").innerHTML = 'u';
+            document.getElementById("xxO").innerHTML = 'u';
+            document.getElementById("yy1").innerHTML = 'v';
+            document.getElementById("yy2").innerHTML = 'v';
+            document.getElementById("yy3").innerHTML = 'v';
+            document.getElementById("yyO").innerHTML = 'v';
+            document.getElementById('pp').innerHTML = 'W';
+            document.getElementById('third').innerHTML = 'Third equation not available in minimization<br>';
+            return;
+        }
+        function onchecks(bo) {
+            if (bo == true) {
+                if (document.getElementById('minc').checked == false) {
+                    document.getElementById("thirdr").innerHTML = '<input name="a3" id="a3" type="text" value="5" size="5"><span id="xx3">x</span>+ <input name="b3" id="b3" type="text" value="b" size="5"><span id="yy3">y</span><span name="" id="sign3">&lt;=</span><input name="c3" id="c3" type="text" value="c" size="5">';
+                } else {
+                    document.getElementById('thirden').checked = false;
+                }
+            } else {
+                document.getElementById("thirdr").innerHTML = " ";
+            }
+        }
+        function sub(ra) {
+            if(!tEE()){
+                if(ra==4){
+                    ra=3;
+                }
+            }
+            return '<sub>' + ra + '</sub>';
+        }
+    </script>
+    <script>
+
+        function calculate() {
+            var textr = '<span id="language" class="shown">Maximize {1}<br>subject to <br/>{2}<br/>{3} <br/>{4} <br/>along x&gt;=0,y&gt=0+ <br/>This is a LPP and moreover a standard maximization problem.<br/>Now to solve this LPP by Simplex method ,we introduce slack variables u<sub>1</sub>,u<sub>2</sub>{41}  such that we get the system <br/>{5}<br/>{6} <br/>{7} <br/>{8}<br/>along x&gt;=0,y&gt;=0. <br/>where all the variable x,y and assumed u are non-negative .<br/>Restating the system in canonical form or standard form we have <br/>{9}...........<br/>{10}........<br/>{11}...... <br/>{12}.........<br/>Now to make the manipulation easier This system is represented by following initial simplex tableau.<br> {iteration} As all the entries in the bottom row are non negative the optimal solution is obtained {13}';
+            var a1 = Number(document.getElementById("a1").value);
+            var a2 = Number(document.getElementById("a2").value);
+            if (tEE()) var a3 = Number(document.getElementById("a3").value);
+            else var a3 = 0;
+            var b1 = Number(document.getElementById("b1").value);
+            var b2 = Number(document.getElementById("b2").value);
+            if (tEE()) var b3 = Number(document.getElementById("b3").value); else var b3 = 0;
+            var c1 = Number(document.getElementById("c1").value);
+            var c2 = Number(document.getElementById("c2").value);
+            if (tEE()) var c3 = Number(document.getElementById("c3").value); else var c3 = 0;
+            var OA = Number(document.getElementById("OA").value);
+            var OB = Number(document.getElementById("OB").value);
+            if (isMin()) {
+                echor("For the given standard minimization problem,we can form a augumented matrix.After transposing the matrix,the following  LPP standard maximize problem  of dual problem is obtained.");
+                document.getElementById('thirden').checked = false;
+                var c = b1;
+                b1 = a2;
+                a2 = c;
+                c = c1;
+                b1 = OA;
+                a2 = c;
+                c = c2;
+                b1 = OB;
+                a2 = c;
+            }
+            var br = "<br/>";
+            textr = textr.replace('{1}', ' ' + 'P= ' + OA.toString() + 'x +' + OB.toString() + "y" + '');
+            textr = textr.replace('{2}', '' + a1.toString() + 'x + ' + b1.toString() + 'y &lt; =' + c1.toString() + ' ' + br);
+            textr = textr.replace("{3}", '' + a2.toString() + 'x + ' + b3.toString() + 'y &lt;= ' + c2.toString() + ' ' + br + '');
+            if (tEE()) {
+                textr = textr.replace("{4}", '' + a3.toString() + 'x + ' + b3.toString() + 'y &lt; =' + c3.toString() + ' ' + br + '');
+            } else {
+                textr = textr.replace("{4}", " ");
+            }
+            if (tEE()) textr = textr.replace("{41}", "and u<sub>3</sub>");
+            else
+                textr = textr.replace("{41}", ' ');
+            textr = textr.replace("{5}", a1.toString() + 'x + ' + b1.toString() + 'y +u' + sub(1) + '= ' + c1.toString() + ' ' + br + '');
+            textr = textr.replace('{6}', a2.toString() + 'x +' + b2.toString() + 'y +u' + sub(2) + '= ' + c2.toString() + ' ' + br + '');
+            if (tEE())
+                textr = textr.replace("{7}", '' + a3.toString() + 'x + ' + b3.toString() + 'y +u' + sub(3) + '=  ' + c3.toString() + ' ' + br + '');
+            else
+                textr = textr.replace("{7}", " ");
+            textr = textr.replace("{8}", ' -' + OA.toString() + 'x - ' + OB.toString() + 'y +Z=0 ' + br + '');
+            textr = textr.replace("{9}", a1.toString() + 'x + ' + b1.toString() + 'y +u' + sub(1) + '+0u' + sub(2) + (tEE() ? '+0u' + sub(3) : ' ') + '+0P' + '= ' + c1.toString() + ' ' + br + '');
+            textr = textr.replace('{10}', a2.toString() + 'x +' + b2.toString() + 'y +0u' + sub(1) + '+1u' + sub(2) + (tEE() ? '+0u' + sub(3) : ' ') + '+0P' + '=' + c2.toString() + ' ' + br + '');
+            if (tEE())
+                textr = textr.replace("{11}", '' + a3.toString() + 'x + ' + b3.toString() + 'y +0u' + sub(1) + '+0u' + sub(2) + (tEE() ? '+1u' + sub(3) : ' ') + '+0P' + '=' + c3.toString() + ' ' + br + '');
+            else
+                textr = textr.replace("{11}", " ");
+            textr = textr.replace("{12}", ' -' + OA.toString() + 'x - ' + OB.toString() + 'y +u' + sub(1) + '+0u' + sub(2) + (tEE() ? '+0u' + sub(3) : ' ') + '+1P=0 ' + br + '');
+            OA = 0 - OA;
+            OB = 0 - OB;
+            if (tEE()) {
+                x = [a1, a2, a3, OA];
+                y = [b1, b2, b3, OB];
+                u1 = [1, 0, 0, 0];
+                u2 = [0, 1, 0, 0];
+                u3 = [0, 0, 1, 0];
+                p = [0, 0, 0, 1];
+                RHS = [c1, c2, c3, 0];
+                bv = ["u1", "u2", "u3"];
+            } else {
+                x = [a1, a2, 0, OA];
+                y = [b1, b2, 0, OB];
+                u1 = [1, 0, 0, 0];
+                u2 = [0, 1, 0, 0];
+                u3 = [0, 0, 0, 0];
+                p = [0, 0, 0, 1];
+                RHS = [c1, c2, 0, 0];
+                bv = ["u1", "u2", null];
+            }
+            tabl = maketable(x, y, u1, u2, p, RHS, bv, ((tEE()) ? u3 : null));
+            tabl += "{iteration}";
+            textr = textr.replace("{iteration}", tabl);
+            var iterat = ' ';
+            while (x[3] < 0 || y[3] < 0) {
+                iterat += makeText(x, y, RHS);
+                if (tEE())
+                    infor = getInfoFromTable(x, y, u1, u2, p, RHS, bv, u3);
+                else
+                    infor = getInfoFromTable(x, y, u1, u2, p, RHS, bv, null);
+                if (infor[0] != 1) {
+                    var n = infor[1];
+                    iterat += "Now to make pivot element 1,performing the row operation R" + sub(n) + "->(1/" + (Math.round(infor[0]*1000)/1000).toString() + ')R' + sub(n) + ' , we have' + br;
+                    x[n] = x[n] / infor[0];
+                    y[n] = y[n]/infor[0];
+                    u1[n] /= infor[0];
+                    u2[n] /= infor[0];
+                    p[n] /= infor[0];
+                    RHS[n] /= infor[0];
+                    if (tEE()) u3[n] /= infor[0];
+                    tably = maketable(x, y, u1, u2, p, RHS, bv, ((tEE()) ? u3 : null));
+                    iterat += tably;
+                }
+                if (tEE())
+                    infore = getInfoFromTable(x, y, u1, u2, p, RHS, bv, u3);
+                else
+                    infore = getInfoFromTable(x, y, u1, u2, p, RHS, bv, null);
+                n = infore[1];
+                pc = infore[2];
+                bv[n] = xy(pc);
+                if (n == 0) toDoTask = [1, 2, 3];
+                if (n == 1) toDoTask = [0, 2, 3];
+                if (n == 2) toDoTask = [0, 1, 3];
+                iterat += "Now performing";
+                for (i = 0; i < toDoTask.length; i++) {
+                    row = toDoTask[i];
+                    if (!(row == 2 && !(tEE()))) {
+                        if(pc==1){
+                            console.log(["RHS",RHS.toString(),"ROW",row,"RHS[ROW]",RHS[row],"N",n,"RHS[N]",RHS[n]]);
+                        }
+
+                        iterat += " ,R" + sub(row + 1) + "-> R" + sub(row + 1) + "-" + ((pc == 1) ? x[row] : y[row]) + "R" + sub(n + 1);
+                        u1[row] = u1[row] - (((pc == 1) ? x[row] : y[row]) * u1[n]);
+                        u2[row] = u2[row] - (((pc == 1) ? x[row] : y[row]) * u2[n]);
+                        var tD = ((pc == 1) ? x[row] : y[row]);
+                        RHS[row] = RHS[row] - (((pc == 1) ? x[row] : y[row]) * RHS[n]);
+                        p[row] = p[row] - (((pc == 1) ? x[row] : y[row]) * p[n]);
+                        if (tEE()) {
+                            u3[row] = u3[row] - (((pc == 1) ? x[row] : y[row]) * u3[n]);
+                        }
+                        xtemp = x[row] - (((pc == 1) ? x[row] : y[row]) * x[n]);
+                        y[row] = y[row] - (((pc == 1) ? x[row] : y[row]) * y[n]);
+                        x[row]=xtemp;
+                        if(pc==1)
+                        console.log(RHS.toString());
+
+                    }
+                }
+                iterat += ",We obtain following simplex tableau";
+                tabl = maketable(x, y, u1, u2, p, RHS, bv, ((tEE()) ? u3 : null));
+// tabl+="{iteration}";
+                iterat += tabl;
+            }
+            textr = textr.replace("{iteration}", iterat);
+            if (isMin()) {
+                textr = textr.replace('{13}', 'As all the entries in bottom row are non-negative,This tableau gives optimal solution+Hence by principal of duality the minimum value is W=' + (Math.round(RHS[3]*1000)/1000).toString() + 'at ');
+                textr += "x=" + (Math.round(u1[3]*1000)/1000).toString() + ',y=' + (Math.round(u2[3]*1000)/1000).toString();
+            } else {
+                textr = textr.replace('{13}', 'As all the entries in bottom row are non-negative,This tableau gives optimal solution Hence the maximum value is P=' + (Math.round(RHS[3]*1000)/1000).toString() + ' at ');
+                for (ccc = 0; ccc < bv.length; ccc++) {
+                    var te = bv[ccc] + ' = ' + (Math.round(RHS[ccc]*1000)/1000).toString() + br;
+                    textr += te;
+                }
+            }
+            echor(textr);
+        }
+        function echor(a) {
+            a = a.replace('{iteration}', '. ');
+            a = a.replace('- -', '+');
+            a = a.replace('--', '+');
+            a = a.replace('+-', '-');
+            document.getElementById('result').innerHTML += a;
+        }
+        function maketable(x, y, u1, u2, p, RHS, bv, u3) {
+            var rrr = '<table border="3px solid" width="100%"  cellpadding="3px" cellspacing="3px" class="frame" id="Table_01"><tr><td>Basic variable</td><td>x</td><td>y</td><td>u' + sub(1) + '</td><td>u' + sub(2) + '</td>' + (tEE() ? '<td>u' + sub(3) + '</td>' : '') + '<td>P</td><td>RHS</td></tr><tr><td>' + (bv[0]) + '</td><td>' + (Math.round(x[0]*1000)/1000).toString() + '</td><td>' + (Math.round(y[0]*1000)/1000).toString() + '</td><td>' + (Math.round(u1[0]*1000)/1000).toString() + '</td><td>' + (Math.round(u2[0]*1000)/1000).toString() + '</td>' + (tEE() ? '<td>' + (Math.round(u3[0]*1000)/1000).toString() + '</td>' : '') + '<td>' + (Math.round(p[0]*1000)/1000).toString() + '</td><td>' + (Math.round(RHS[0]*1000)/1000).toString() + '</td></tr><tr><td>' + bv[1] + '</td><td>' + (Math.round(x[1]*1000)/1000).toString() + '</td><td>' + (Math.round(y[1]*1000)/1000).toString() + '</td><td>' + (Math.round(u1[1]*1000)/1000).toString() + '</td><td>' + (Math.round(u2[1]*1000)/1000).toString() + '</td>' + (tEE() ? '<td>' + (Math.round(u3[1]*1000)/1000).toString() + '</td>' : '') + '<td>' + (Math.round(p[1]*1000)/1000).toString() + '</td><td>' + (Math.round(RHS[1]*1000)/1000).toString() + '</td></tr>' + (tEE() ? '<tr><td>' + bv[2] + '</td><td>' + (Math.round(x[2]*1000)/1000).toString() + '</td><td>' + (Math.round(y[2]*1000)/1000).toString() + '</td><td>' + (Math.round(u1[2]*1000)/1000).toString() + '</td><td>' + (Math.round(u2[2]*1000)/1000).toString() + '</td><td>' + (Math.round(u3[2]*1000)/1000).toString() + '</td><td>' + (Math.round(p[2]*1000)/1000).toString() + '</td><td>' + (Math.round(RHS[2]*1000)/1000).toString() + '</td></tr>' : '') + '<tr><td> </td><td>' + (Math.round(x[3]*1000)/1000).toString() + '</td><td>' + (Math.round(y[3]*1000)/1000).toString() + '</td><td>' + (Math.round(u1[3]*1000)/1000).toString() + '</td><td>' + (Math.round(u2[3]*1000)/1000).toString() + '</td>' + (tEE() ? '<td>' + (Math.round(u3[3]*1000)/1000).toString() + '</td>' : '') + '<td>' + (Math.round(p[3]*1000)/1000).toString() + '</td><td>' + (Math.round(RHS[3]*1000)/1000).toString() + '</td></tr></table>';
+            return rrr;
+        }
+
+        function tEE() {
+            return document.getElementById('thirden').checked;
+        }
+
+        function nthTerm(aa) {
+            if (aa == 1) return ' first ';
+            if (aa == 2) return 'second';
+            if (aa == 3) return 'third';
+            return aa.toString() + '<sup>th</sup>';
+        }
+        function getMin(q, w, e) {
+            if ((q <= w) && (q <= e)) return q;
+            if ((w <= q) && (w <= e)) return w;
+            return e;
+        }
+
+        function makeText(x, y, RHS) {
+            r1 = (RHS[0] / ((x[3] < y[3]) ? x[0] : y[0]))
+            r2 = (RHS[1] / ((x[3] < y[3]) ? x[1] : y[1]))
+            if (tEE()) r3 = (RHS[2] / ((x[3] < y[3]) ? x[2] : y[2]));
+            else r3 = 9999999;
+            var toret = 'From this tableau the BFS(basic Feasible solution ) is not the optimal solution since there exists negative entry in bottom row.<br/>Since ' + ((x[3] < y[3]) ? (Math.round(x[3]*1000)/1000).toString() : (Math.round(y[3]*1000)/1000).toString()) + ' is the most negative indicator ,' + ((x[3] < y[3]) ? 'x' : 'y') + ' is the pivot column and   ' + ((x[3] < y[3]) ? 'x' : 'y') + ' is the entering variable .Dividing the last element RHS in each row by corresponding entry in pivot column we obtain <br>' + (Math.round(RHS[0]*1000)/1000).toString() + '/ ' + ((x[3] < y[3]) ? x[0] : y[0]).toString() + ' = ' + r1.toString() + ', <br>' + (Math.round(RHS[1]*1000)/1000).toString() + '/ ' + ((x[3] < y[3]) ? (Math.round(x[1]*1000)/1000).toString() : (Math.round(y[1]*1000)/1000).toString()) + ' = ' + (Math.round(r2*1000)/1000).toString() + '<br>,';
+            if (tEE()) {
+                toret += (Math.round(RHS[2]*1000)/1000).toString() + '/' + ((x[3] < y[3]) ? (Math.round(x[2]*1000)/1000).toString() : (Math.round(y[2]*1000)/1000).toString()) + ' = ' + (Math.round(r3*1000)/1000).toString() + '<br>,';
+            }
+            var min = getMin(r1, r2, r3);
+            toret += ' Since ' + min.toString() + ' is the minimum ratio and ' + nthTerm(getMinPos(r1, r2, r3)).toString() + ' row is the pivot row.';
+            mP = getMinPos(r1, r2, r3);
+            toret += ' So ' + ((x[3] < y[3]) ? x[mP - 1] : y[mP - 1]) + ' is the pivot element as it lies in pivot column and pivot row.';
+            return toret;
+        }
+        function getMinPos(q, w, e) {
+            if ((q <= w) && (q <= e)) return 1;
+            if ((w <= q) && (w <= e)) return 2;
+            return 3;
+        }
+        function getInfoFromTable(x, y, u1, u2, p, RHS, bv, u3) {
+            r1 = (RHS[0] / ((x[3] < y[3]) ? x[0] : y[0]))
+            r2 = (RHS[1] / ((x[3] < y[3]) ? x[1] : y[1]))
+            if (tEE()) r3 = (RHS[2] / ((x[3] < y[3]) ? x[2] : y[2]));
+            else r3 = 9999999;
+            var pc = ((x[3] < y[3]) ? '1' : '2');
+            var min = getMin(r1, r2, r3);
+            var pr = getMinPos(r1, r2, r3) - 1;
+            var pe = ((x[3] < y[3]) ? x[mP - 1] : y[mP - 1]);
+            var treq = [pe, pr, pc]
+            return treq;
+        }
+        function isMin() {
+// pre alery
+            return document.getElementById('minc').checked;
+        }
+        function xy(a) {
+            return ((a == 1) ? 'x' : 'y');
+        }
+    </script>
+    <style type="text/css" media="screen">
+        #jqt.fullscreen #home.info {
+            display: none;
+        }
+
+        div#jqt #about {
+            padding: 100px 10px 40px;
+            text-shadow: rgba(0, 0, 0, 0.3) 0px -1px 0;
+            color: #999;
+            font-size: 13px;
+            text-align: center;
+            background: #161618;
+        }
+
+        div#jqt #about p {
+            margin-bottom: 8px;
+        }
+
+        div#jqt #about a {
+            color: #fff;
+            font-weight: bold;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>-
+<div id="jqt" class="">
+    <div id="home" class="current">
+        <div class="toolbar">
+            <h1>Solve It Easy</h1>
+            <a class="back" href="index.html">Home</a></div>
+        <div class="scroll">
+
+            <form id="Amrix" class="form">
+                <label for="maxc"></label>
+                <input type="radio" name="maxormin" value='max' id="maxc" onclick="maxcl();" checked="checked">
+                <span
+                    id='max'>Maximized</span>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <label for="minc"></label>
+                <input type='radio' value='min' name='maxormin' onclick="mincl();" id="minc"><span id='min'>minimize</span><br/>
+                <input name='a1' id='a1' type="number" size="5">
+                <span id='xx1'>x</span>+
+                <input name='b1' id='b1' type="number" size="5">
+                <span id='yy1'>y</span>
+                <span id="sign2">&lt;=</span>
+                <input name='c1' id='c1' type="number" size="5">
+                <br/><br/> <input name='a2' id='a2' type="number" size="5">
+                <span id='xx2'>x</span>+
+                <input name='b2' id='b2' type="number" size="5">
+                <span id='yy2'>y</span>
+                <span id="sign1">&lt;=</span>
+                <input name='c2' id='c2' type="number" size="5">
+                <br><br/>
+                <input type="checkbox" name='thirden' id="thirden" checked="checked" onclick="onchecks(this.checked);">
+                <span id="third">Enable third inequality<br/></span><span id="thirdr" style="">
+                <input name='a3' id='a3' type="number" size="5"><span id='xx3'>x</span>+
+                <input name='b3' id='b3' type="number" size="5"><span id='yy3'>y</span>
+                <span id="sign3">&lt;=</span>
+                <input name='c3' id='c3' type="number" size="5">
+            </span>
+                <br><br/> Objective function to <span id="max2">maximize</span><br>
+                <span id="pp"> P</span>=
+                <input
+                    type="number" name='OA' id="OA" size="5"><span id='xxO'>x</span>+ <input type="number" name='OB'
+                                                                                             id="OB" size="5"><span
+                    id='yyO'>y</span><br> <br>
+                <hr/>
+                <input type="button" value='Calculate' class="redButton" onclick="calculate();"><br/></br>
+                <hr>
+              <div style="visibility: hidden">
+                <input type="checkbox" checked="checked" name='showlang' id="showlang">Show language
+              </div>
+
+                </form>
+        </div>
+        <div id='result'></div>
+        <hr/>
+        <script src="tips.js"></script>
+        <div id="info" class="info">Loading Tips
+            <script>inFo("lpp");</script>
+        </div>
+    </div>
+</div>
+<script>
+    if (window.navigator.standalone) {
+        $("meta[name='apple-mobile-web-app-status-bar-style']").remove();
+    }
+</script>
 </html>

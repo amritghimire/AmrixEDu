@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title>AmriS Plus 2</title>
+        <title>Solve it Easy</title>
         <link rel="stylesheet" href="vanilla.min.css" data-jqt-theme>
 <meta name="viewport" content="initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
         <meta name="apple-mobile-web-app-capable" content="yes">
@@ -12,8 +12,8 @@
         <script src="zepto.min.js" type="text/javascript" charset="utf-8"></script>
         <script> 
  function presenceOf(a,b){
-depth=0;
-for(i=0;i<b.length;i++){
+     var depth = 0;
+for(var i=0;i<b.length;i++){
  if(b[i]=='(')
  depth++;
 if(b[i]==')')
@@ -28,12 +28,11 @@ function d(fx){
 
 log("in d with fx= "+fx);
  fx=cleanExpression(fx);
- var str =fx;
- var n = full(str,/([0-9]+)x/, "$1*x");
+    var n = full(fx,/([0-9]+)x/, "$1*x");
 n=full(n,/([0-9x]+)\(/,"$1*(");
 n=full(n,/\)\(/,")*(");
 fx=n;
-dep=0;
+    var dep = 0;
 for(var iter=0;iter<fx.length;iter++){
 if(fx[iter]=="(")
  dep++;
@@ -43,41 +42,44 @@ if(fx[iter]==")")
 if(dep!==0){
  return("bracket not balanced");
 }
-if((presenceOf('+',fx))||(presenceOf('-',fx))){
- depth=0;
- start=0;
- position=0;
- operatorSeq=[];
- expressionParts=[];
- operatorSeq.push('+');
- if(fx[0]=='-'){
-  operatorSeq[0]='-';
-  postion++;
- }
- while(position<fx.length){
- if(fx[position]=='(')
-   depth++;
- if(fx[position]==')')
-   depth--;
- if(((fx[position]=='+')||(fx[position]=='-'))&&(depth==0)){
-  extract=fx.substring(start,position);
-  expressionParts.push(extract);
-  operatorSeq.push(fx[position]);
-  start=position+1;
- }
- position++;
- }
-extract=fx.substring(start,fx.length);
-expressionParts.push(extract);
-derivative=ruleAddition(expressionParts,operatorSeq);
-log("<b>expressionParts </b>");
-log(expressionParts);
-log("<b>operatorSeq</b>");
-log(operatorSeq);
-log("DRSUDYJD");
-log(fx+" : "+derivative);
-return derivative;
-}
+    var expressionParts;
+    var depth;
+    var start, position, operatorSeq, extract;
+    if ((presenceOf('+', fx)) || (presenceOf('-', fx))) {
+        depth = 0;
+        start = 0;
+        position=0;
+        operatorSeq = [];
+        expressionParts = [];
+        operatorSeq.push('+');
+        if (fx[0] == '-') {
+            operatorSeq[0] = '-';
+            position++;
+        }
+        while (position < fx.length) {
+            if (fx[position] == '(')
+                depth++;
+            if (fx[position] == ')')
+                depth--;
+            if (((fx[position] == '+') || (fx[position] == '-')) && (depth == 0)) {
+                extract = fx.substring(start, position);
+                expressionParts.push(extract);
+                operatorSeq.push(fx[position]);
+                start = position + 1;
+            }
+            position++;
+        }
+        extract = fx.substring(start, fx.length);
+        expressionParts.push(extract);
+        derivative = ruleAddition(expressionParts, operatorSeq);
+        log("<b>expressionParts </b>");
+        log(expressionParts);
+        log("<b>operatorSeq</b>");
+        log(operatorSeq);
+        log("DRSUDYJD");
+        log(fx + " : " + derivative);
+        return derivative;
+    }
 if(presenceOf('*',fx)){
  depth=0;
  start=0;
@@ -102,29 +104,30 @@ log("$$$$$$$$$$$RETURNING FROM D");
 log(fx+" : "+derivative);
 return derivative;
 }
-if(presenceOf('/',fx)){
- depth=0;
- start=0;
- position=0;
- expressionParts=[];
- while(position<fx.length){
- if(fx[position]=='(')
-   depth++;
- if(fx[position]==')')
-   depth--;
- if((fx[position]=='/')&&(depth==0)){
-  extract=fx.substring(start,position);
-  expressionParts.push(extract);
-  start=position+1;
- }
- position++;
- }
-extract=fx.substring(start,fx.length);
-expressionParts.push(extract);
-derivative=ruleDivision(expressionParts);
- log(fx+" : "+derivative); 
-return derivative;
-} 
+    var derivative, dd;
+    if (presenceOf('/', fx)) {
+        depth = 0;
+        start = 0;
+        position = 0;
+        expressionParts = [];
+        while (position < fx.length) {
+            if (fx[position] == '(')
+                depth++;
+            if (fx[position] == ')')
+                depth--;
+            if ((fx[position] == '/') && (depth == 0)) {
+                extract = fx.substring(start, position);
+                expressionParts.push(extract);
+                start = position + 1;
+            }
+            position++;
+        }
+        extract = fx.substring(start, fx.length);
+        expressionParts.push(extract);
+        derivative = ruleDivision(expressionParts);
+        log(fx + " : " + derivative);
+        return derivative;
+    }
 if(presenceOf('^',fx)){
  depth=0;
  start=0;
@@ -180,18 +183,19 @@ str=str.replace(pat,rep);
 return str;
 }
 function ruleAddition(expressionParts,operatorSeq){
-var allDer=""
+var allDer="";
 log("in rule addition with expressionParts= "+expressionParts+" operatorSeq "+operatorSeq);
 log("New <br>AllDer "+allDer);
-for(var i=0;i<expressionParts.length;i++){
- tD=d(expressionParts[i]);
- log("<b>"+tD+"</b>");
- log("<u>Al: "+allDer+"</u>");
- log(expressionParts[i]);
- allDer=allDer+operatorSeq[i];
- allDer=allDer+tD;
- log("<b>"+allDer+"</b>"); 
- }
+    var tD;
+    for (var i = 0; i < expressionParts.length; i++) {
+        tD = d(expressionParts[i]);
+        log("<b>" + tD + "</b>");
+        log("<u>Al: " + allDer + "</u>");
+        log(expressionParts[i]);
+        allDer = allDer + operatorSeq[i];
+        allDer = allDer + tD;
+        log("<b>" + allDer + "</b>");
+    }
 log("allDer "+allDer);
  allDer="("+allDer;
 allDer+=")";
@@ -203,7 +207,7 @@ return allDer;
 }
 function ruleMultiplication(expressionParts){
 log("in ruleMultiplication"+expressionParts);
-toDir="(";
+    var toDir = "(", ec;
 ec=false;
 for(var o in expressionParts){
  if(/^[0-9]+$/.exec(expressionParts[o])){
@@ -422,24 +426,24 @@ document.getElementById("result").innerHTML=dtr;
     <div id="jqt" class="">
  <div id="home" class="current">
         <div class="toolbar">
-                    <h1>AmriS PluS 2 </h1>
-                    <a class="back" href="home.html">Home</a></div> 
+                    <h1>Solve It Easy </h1>
+                    <a class="back" href="index.html">Home</a></div>
                     <div class="scroll">
                    
-                   <form id="Amrix" action="LPR.php" class="form"> 
- <p></p> <b>
-  Insert an expression into 
-                  the             input field below:</b>
+                   <form id="Amrix"  class="form">
+ <p></p>
 
-        </p>
-        <form>
-        
-            <input id="derivBox" name="derivBox" value="(((5x-4(x/4-5)+7)))">
+                       <form>
+
+            <label for="derivBox"> <b>
+                Insert an expression into
+                the             input field below:<br></b></label><input id="derivBox" name="derivBox" value="sin(x)">
             <br>
             <br>
-            <input type="button" onclick="javascript:goOnDeriv();" class="redButton" value="Calculate" >
+            <input type="button" onclick="goOnDeriv();" class="redButton" value="Calculate" >
 </form>
-        .</p><div id="result"></div></form> 
+        .
+                       <div id="result"></div></form>
         <script src="tips.js"></script> <div id="info" class="info">Loading Tips<script>inFo("derivative");</script></div>
 </div>
  <script>

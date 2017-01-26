@@ -1,557 +1,584 @@
 <!doctype html>
 <html>
-    <head>
-        <meta charset="UTF-8" />
-        <title>AmriS Plus 2</title>
-        <link rel="stylesheet" href="vanilla.min.css" data-jqt-theme>
-<meta name="viewport" content="initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
-        <meta name="apple-mobile-web-app-capable" content="yes">
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Solve It Easy</title>
+    <link rel="stylesheet" href="vanilla.min.css" data-jqt-theme>
+    <meta name="viewport" content="initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-        <!-- Either, (1) Zepto:  Un-comment these 2 lines (order matters)  -->
-        <script src="zepto.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="tips.js"></script>
-        <script> 
- function presenceOf(a,b){
-depth=0;
-for(i=0;i<b.length;i++){
- if(b[i]=='(')
- depth++;
-if(b[i]==')')
- depth--;
-if((b[i]==a)&&(depth==0))
-return true;
-}
-return false;
-}
-
-function d(fx){
-
-log("in d with fx= "+fx);
- fx=cleanExpression(fx);
- var str =fx;
- var n = full(str,/([0-9]+)x/, "$1*x");
-n=full(n,/([0-9x]+)\(/,"$1*(");
-n=full(n,/\)\(/,")*(");
-fx=n;
-dep=0;
-for(var iter=0;iter<fx.length;iter++){
-if(fx[iter]=="(")
- dep++;
-if(fx[iter]==")")
- dep--;
-}
-if(dep!==0){
- return("bracket not balanced");
-}
-if((presenceOf('+',fx))||(presenceOf('-',fx))){
- depth=0;
- start=0;
- position=0;
- operatorSeq=[];
- expressionParts=[];
- operatorSeq.push('+');
- if(fx[0]=='-'){
-  operatorSeq[0]='-';
-  postion++;
- }
- while(position<fx.length){
- if(fx[position]=='(')
-   depth++;
- if(fx[position]==')')
-   depth--;
- if(((fx[position]=='+')||(fx[position]=='-'))&&(depth==0)){
-  extract=fx.substring(start,position);
-  expressionParts.push(extract);
-  operatorSeq.push(fx[position]);
-  start=position+1;
- }
- position++;
- }
-extract=fx.substring(start,fx.length);
-expressionParts.push(extract);
-derivative=ruleAddition(expressionParts,operatorSeq);
-log("<b>expressionParts </b>");
-log(expressionParts);
-log("<b>operatorSeq</b>");
-log(operatorSeq);
-log("DRSUDYJD");
-log(fx+" : "+derivative);
-return derivative;
-}
-if(presenceOf('*',fx)){
- depth=0;
- start=0;
- position=0;
- expressionParts=[];
- while(position<fx.length){
- if(fx[position]=='(')
-   depth++;
- if(fx[position]==')')
-   depth--;
- if((fx[position]=='*')&&(depth==0)){
-  extract=fx.substring(start,position);
-  expressionParts.push(extract);
-  start=position+1;
- }
- position++;
- }
-extract=fx.substring(start,fx.length);
-expressionParts.push(extract);
-derivative=ruleMultiplication(expressionParts);
-log("$$$$$$$$$$$RETURNING FROM D");
-log(fx+" : "+derivative);
-return derivative;
-}
-if(presenceOf('/',fx)){
- depth=0;
- start=0;
- position=0;
- expressionParts=[];
- while(position<fx.length){
- if(fx[position]=='(')
-   depth++;
- if(fx[position]==')')
-   depth--;
- if((fx[position]=='/')&&(depth==0)){
-  extract=fx.substring(start,position);
-  expressionParts.push(extract);
-  start=position+1;
- }
- position++;
- }
-extract=fx.substring(start,fx.length);
-expressionParts.push(extract);
-derivative=ruleDivision(expressionParts);
- log(fx+" : "+derivative); 
-return derivative;
-} 
-if(presenceOf('^',fx)){
- depth=0;
- start=0;
- position=0;
- expressionParts=[];
- while(position<fx.length){
- if(fx[position]=='(')
-   depth++;
- if(fx[position]==')')
-   depth--;
- if((fx[position]=='^')&&(depth==0)){
-  extract=fx.substring(start,position);
-  expressionParts.push(extract);
-  start=position+1;
- }
- position++;
- }
-extract=fx.substring(start,fx.length);
-expressionParts.push(extract);
-derivative=rulePower(expressionParts);
-return derivative;
-} 
-if(fx=="x"){
- log("in fx==x  "+fx); 
- log(fx+" : 1"); 
-return "1";
-}
-if((/^[A-Za-z]+\(/.exec(fx))&&(fx[fx.length-1]==')')){
-dd=ruleFunction(fx);
-return dd;
-}
-if(fx.indexOf("x")<0){
- log(fx+" : 0"); 
-return "0";
-}
- log(fx+" : unidentified"); 
-return("unidentified solution"+fx);
-
-}
-
-   function cleanExpression(vexpression) 
-    {
-while(vexpression[0]=='(' && vexpression[vexpression.length-1]==')'){
-vexpression=vexpression.substring(1,vexpression.length-1);
-}
-        vexpression = vexpression.trim();
-        return vexpression;
-}
-function full(str,pat,rep){
-while(pat.exec(str)!=null){
-str=str.replace(pat,rep);
-}
-return str;
-}
-function ruleAddition(expressionParts,operatorSeq){
-var allDer=""
-log("in rule addition with expressionParts= "+expressionParts+" operatorSeq "+operatorSeq);
-log("New <br>AllDer "+allDer);
-for(var i=0;i<expressionParts.length;i++){
- tD=d(expressionParts[i]);
- log("<b>"+tD+"</b>");
- log("<u>Al: "+allDer+"</u>");
- log(expressionParts[i]);
- allDer=allDer+operatorSeq[i];
- allDer=allDer+tD;
- log("<b>"+allDer+"</b>"); 
- }
-log("allDer "+allDer);
- allDer="("+allDer;
-allDer+=")";
-log("ADDRETURN");
-log(expressionParts);
-log(operatorSeq);
-log(allDer);
-return allDer;
-}
-function ruleMultiplication(expressionParts){
-log("in ruleMultiplication"+expressionParts);
-toDir="(";
-ec=false;
-for(var o in expressionParts){
- if(/^[0-9]+$/.exec(expressionParts[o])){
-  ec=true;
- }
- }
- if(ec==true){
-  var ExpressionPartsi=[];
-  coeffs=1;
-  for(p in expressionParts){
-   if(/^[0-9]+$/.exec(expressionParts[p])){
-    coeffs=coeffs*Number(expressionParts[p]);
-   }else{
-   ExpressionPartsi.push(expressionParts[p]);
-   }
-  }
- if(ExpressionPartsi.length>1){ DERIVATIVE=ruleMultiplication(ExpressionPartsi);
- }else{
- DERIVATIVE=ExpressionPartsi[0];
- }
- log(ExpressionPartsi);
-DERIVATIVE=coeffs.toString()+"*("+cleanExpression(d(DERIVATIVE))+")";
-return DERIVATIVE;
-}
-var lng=expressionParts.length;
-for(var i in expressionParts){
- der=d(expressionParts[i]);
- toDir+=der;
- for(var j in expressionParts){
-  if(i!==j){
-   toDir+="*";
-   toDir+=expressionParts[j];
-  }
- }
- toDir=toDir+"+";
-}
-Deriv=toDir.substring(0,toDir.length-1);
-Deriv+=")";
-return Deriv;
-}
-function ruleDivision(expressionParts){
-   log("in division");
-  log(expressionParts);
-   if (expressionParts.length > 2) {
-            vlast_element = expressionParts.pop();
-
-            expressionParts = [expressionParts.join('/'), vlast_element];
-            return  ruleDivision(expressionParts);
-        } else {
-   if(/^[0-9]+$/.exec(expressionParts[1])){
-   log("IN DES");
-   Dert="((1/"+expressionParts[1]+")*("+cleanExpression(d(expressionParts[0]))+"))";
-   return Dert;
-   } 
-            return '('+ d(expressionParts[0])+'*'+expressionParts[1]+'-'+ d(expressionParts[1])+'*'+expressionParts[0]+')/('+expressionParts[1]+'*'+expressionParts[1]+')';
-        } 
-        return("DERIVATIVE");
-}
-
- function rulePower(expressionParts) 
-    {
-    log("in rulePower with");
-    
-    log(expressionParts);
-    
-    
-        if ((expressionParts.length) > 2) {
-        log("in if");
-
-            last_element = expressionParts.pop();
-            log(last_element);
-            // delete the last ^
-
-            vparts = [expressionParts.join('^'), last_element];
-            log(vparts);
-            
-            return  rulePower(vparts);
-           
+    <!-- Either, (1) Zepto:  Un-comment these 2 lines (order matters)  -->
+    <script src="zepto.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="tips.js"></script>
+    <script>
+        function presenceOf(a, b) {
+            depth = 0;
+            for (i = 0; i < b.length; i++) {
+                if (b[i] == '(')
+                    depth++;
+                if (b[i] == ')')
+                    depth--;
+                if ((b[i] == a) && (depth == 0))
+                    return true;
+            }
+            return false;
         }
-      
-  if(expressionParts[1].indexOf("x")<0){
-  log(expressionParts[1]); 
-                // a' * b * a^(b-1) 
-               
-if (/^[0-9]+$/.exec(expressionParts[1])!==null) {
-log("<u>In double</u>"); 
-a=expressionParts[0];
-b=expressionParts[1];
-n=Number(b)-1;
-var DERIVATIVE=b+"*"+a+"^"+n.toString()+"*"+d(a);
-return DERIVATIVE;
-}else{
-a=expressionParts[0];
-b=expressionParts[1]; 
-var DERIVATIVE=b+"*"+a+"^("+b+"-1)*"+d(a);
-return DERIVATIVE;
-}
-                 // a^b * ((a'*b)/a + b'*log(a))
-               // return vparts[0]+'^'+vparts[1]+'* (('+vparts[1]+'*'+ d(vparts[0])+')/'+vparts[0] +'+ '+d(vparts[1])+'*log('+vparts[0]+'))';
-       }else{
-       a=expressionParts[0];
-       b=expressionParts[1]; 
-       var DERIVATIVE=a+'^'+b+'* (('+b+'*'+ d(a)+')/'+a +'+ '+d(b)+'*ln('+a+'))'; 
-       return DERIVATIVE;
-       }
-        return("FINAL")
-    }
-    function sin(a){return Math.sin(a);}
-    function cos(a){return Math.cos(a);} 
-    function tan(a){return Math.tan(a);} 
-function ruleFunction(exp){
- log("in ruleFunction with exp= "+exp);
- var registeredFunction = {'sin'  : ['cos(arg)*',''],
-                                      'cos'  : ['-sin(arg)*',''],
-                                      'tan'  : ['1/cos(arg)^2*',''],
-                                      'ln'   : ['','/(arg)'],
-                                      'log'  : ['','/(arg)'],
-                                      'e'    : ['','*e(arg)'],
-                                      'sqrt' : ['((1/2)/((arg)^(1/2)))',''],
-                                      'acos' : ['-1/((1-(arg)^2)^(1/2))',"NOD"],
-                                      'asin' : ['1/((1-(arg)^2)^(1/2))',"NOD"],
-                                      'atan' : ['1/(1+(arg)^2)',"NOD"],
-                                      'sinh' : ['cosh(arg)*',''],
-                                      'cosh' : ['sinh(arg)*',''],
-                                      'tanh' : ['(sech(arg)^2)*',''],
-                                      'coth' : ['-(csch(arg)^2)*',''],
-                                      'sech' : ['-sech(arg)*tanh(arg)*',''],
-                                      'csch' : ['-csch(arg)*coth(arg)*',''],
- 'd':['',''],                                     }; 
-                                      fx=exp;
- n=fx.indexOf('(');
- func=fx.substring(0,n);
- arg=fx.substring(n,fx.length);
- arg=cleanExpression(arg); if(registeredFunction[func]==undefined){
-  return "Undefined function detected";
- }else{
- arT=registeredFunction[func];
- }
- Sumi=arT[0];
- Tra=arT[1];
- while(Sumi.indexOf("arg")>=0){
- Sumi=Sumi.replace("arg",arg);
- }
- while(Tra.indexOf("arg")>=0){
- Tra=Tra.replace("arg",arg);
- }
- Der=Sumi;
- if(Tra!=='NOD'){
-  Der+=d(arg);
-  if(Tra!==''){
-   Der+=Tra;
-  }
- }    
- return Der;
- }
- function f(fxa,x){
- y=x.toString();
-while(fxa.indexOf("(+")>=0)
-fxa=fxa.replace("(+","(");
-while(fxa.indexOf("(-")>=0)
-fxa=fxa.replace("(-","(0-");
-fxa=cleanExpression(fxa); 
-re=fxa;
- re=full(re,/x/,y); 
- re=d_termPower(fxa);
- re=full(re,/x/,y);
- ev="Result=("+re+");";
- eval(ev);
- return Number(Result);
- }
- function log(text){
- /*
- a=document.getElementById("log").innerHTML+"<br/>";
- a+=text;
- document.getElementById("log").innerHTML=a;
- */
- }
-function goOnDeriv(){
-a=document.getElementById("derivBox").value;
-deriv=" ";
-fx=a;
- fx=cleanExpression(fx);
- var str =fx;
- var n = full(str,/([0-9]+)x/, "$1*x");
-n=full(n,/([0-9x]+)\(/,"$1*(");
-n=full(n,/\)\(/,")*(");
-fx=n;
-dep=0;
-for(var iter=0;iter<fx.length;iter++){
-if(fx[iter]=="(")
- dep++;
-if(fx[iter]==")")
- dep--;
-}
-if(dep!==0){
- alert("bracket not balanced");
- return false;
-} 
-if(fx.indexOf("x")<0){
-alert("Variable Not Found");
-return false;
-}
 
- while(fx.indexOf("(+")>=0)
-fx=fx.replace("(+","(");
-while(fx.indexOf("(-")>=0)
-fx=fx.replace("(-","(0-");
-fx=cleanExpression(fx);
-deriv=fx;
-Res=Newton_Raphson(fx);
-dtr="<h1>Result</h1><br><h2>"+Res+"</h2>";
-document.getElementById("result").innerHTML=dtr;
-inFo("solve");
-} 
-function Newton_Raphson(fx){
-var xI=document.getElementById("x0").value;
-x=f(xI,9);
-var eI=document.getElementById("e").value;
-er=f(eI,3);
-var mI=document.getElementById("mI").value;
-m=f(mI,3);
-if(m==0) m=Math.pow(10,4);
-var iter=0;
-dx=d(fx);
-while((f(fx,x)!==0)&&(iter<=m)){
-xp=x;
-x=x-((f(fx,x))/(f(dx,x)));
-if(xp==x)
-break;
-iter++;
-} 
-if(iter>=9999) return("SOLUTION NOT FOUND");
-return x;
-}
-function abs(a){
-if(a<0)
-return ((0-1)*a);
-if(a>0)
-return a;
-return 0;
-}
-function d_termPower(fx){
-n=fx.indexOf("^");
-while(n>=0){
- if(fx[n-1]==")"){
-  i=n-1;
-  start=0;
-  depth=1;
-  while(i>=0){
-  if(fx[i]=="("){
-  depth--;
-  }
-  if(fx[i]==")")
-  depth++;
-  if(depth==0){
-  start=i;
-  i=-9;
-  }
-  i--;
-  }
- }else{
- start=n-1;
- }
- if(fx[n+1]=="("){
-  i=n+1;
-  start=0;
-  depth=1;
-  while(i<=fx.length){
-  if(fx[i]==")"){
-  depth--;
-  }
-  if(fx[i]=="(")
-  depth++;
-  if(depth==0){
-  end=i;
-  i=fx.length+9;
-  }
-  i++;
-  }
- }else{
- end=n+1;
- }
- fuTll=fx.substring(start,end+1);
- toR="Math.pow("+fx.substring(start,n)+","+fx.substring(n+1,end+1)+")";
- fx=fx.replace(fuTll,toR);
- n=fx.indexOf("^"); 
-}
- return fx;
-}
-</script>
-        <script type="text/javascript" charset="utf-8">
-              $('a[target="_blank"]').bind('click', function() {
-                    if (confirm('This link opens in a new window.')) {
-                        return true;
-                    } else {
-                        return false;
+        function d(fx) {
+
+            log("in d with fx= " + fx);
+            fx = cleanExpression(fx);
+            var str = fx;
+            var n = full(str, /([0-9]+)x/, "$1*x");
+            n = full(n, /([0-9x]+)\(/, "$1*(");
+            n = full(n, /\)\(/, ")*(");
+            fx = n;
+            dep = 0;
+            for (var iter = 0; iter < fx.length; iter++) {
+                if (fx[iter] == "(")
+                    dep++;
+                if (fx[iter] == ")")
+                    dep--;
+            }
+            if (dep !== 0) {
+                return ("bracket not balanced");
+            }
+            if ((presenceOf('+', fx)) || (presenceOf('-', fx))) {
+                depth = 0;
+                start = 0;
+                position = 0;
+                operatorSeq = [];
+                expressionParts = [];
+                operatorSeq.push('+');
+                if (fx[0] == '-') {
+                    operatorSeq[0] = '-';
+                    postion++;
+                }
+                while (position < fx.length) {
+                    if (fx[position] == '(')
+                        depth++;
+                    if (fx[position] == ')')
+                        depth--;
+                    if (((fx[position] == '+') || (fx[position] == '-')) && (depth == 0)) {
+                        extract = fx.substring(start, position);
+                        expressionParts.push(extract);
+                        operatorSeq.push(fx[position]);
+                        start = position + 1;
                     }
-                });
-                </script>
- <style type="text/css" media="screen">
-            #jqt.fullscreen #home.info {
-                display: none;
+                    position++;
+                }
+                extract = fx.substring(start, fx.length);
+                expressionParts.push(extract);
+                derivative = ruleAddition(expressionParts, operatorSeq);
+                log("<b>expressionParts </b>");
+                log(expressionParts);
+                log("<b>operatorSeq</b>");
+                log(operatorSeq);
+                log("DRSUDYJD");
+                log(fx + " : " + derivative);
+                return derivative;
             }
-            div#jqt #about {
-                padding: 100px 10px 40px;
-                text-shadow: rgba(0, 0, 0, 0.3) 0px -1px 0;
-                color: #999;
-                font-size: 13px;
-                text-align: center;
-                background: #161618;
+            if (presenceOf('*', fx)) {
+                depth = 0;
+                start = 0;
+                position = 0;
+                expressionParts = [];
+                while (position < fx.length) {
+                    if (fx[position] == '(')
+                        depth++;
+                    if (fx[position] == ')')
+                        depth--;
+                    if ((fx[position] == '*') && (depth == 0)) {
+                        extract = fx.substring(start, position);
+                        expressionParts.push(extract);
+                        start = position + 1;
+                    }
+                    position++;
+                }
+                extract = fx.substring(start, fx.length);
+                expressionParts.push(extract);
+                derivative = ruleMultiplication(expressionParts);
+                log("$$$$$$$$$$$RETURNING FROM D");
+                log(fx + " : " + derivative);
+                return derivative;
             }
-            div#jqt #about p {
-                margin-bottom: 8px;
+            if (presenceOf('/', fx)) {
+                depth = 0;
+                start = 0;
+                position = 0;
+                expressionParts = [];
+                while (position < fx.length) {
+                    if (fx[position] == '(')
+                        depth++;
+                    if (fx[position] == ')')
+                        depth--;
+                    if ((fx[position] == '/') && (depth == 0)) {
+                        extract = fx.substring(start, position);
+                        expressionParts.push(extract);
+                        start = position + 1;
+                    }
+                    position++;
+                }
+                extract = fx.substring(start, fx.length);
+                expressionParts.push(extract);
+                derivative = ruleDivision(expressionParts);
+                log(fx + " : " + derivative);
+                return derivative;
             }
-            div#jqt #about a {
-                color: #fff;
-                font-weight: bold;
-                text-decoration: none;
+            if (presenceOf('^', fx)) {
+                depth = 0;
+                start = 0;
+                position = 0;
+                expressionParts = [];
+                while (position < fx.length) {
+                    if (fx[position] == '(')
+                        depth++;
+                    if (fx[position] == ')')
+                        depth--;
+                    if ((fx[position] == '^') && (depth == 0)) {
+                        extract = fx.substring(start, position);
+                        expressionParts.push(extract);
+                        start = position + 1;
+                    }
+                    position++;
+                }
+                extract = fx.substring(start, fx.length);
+                expressionParts.push(extract);
+                derivative = rulePower(expressionParts);
+                return derivative;
             }
-        </style>
-    </head>
-    <body>
-    <div id="jqt" class="">
- <div id="home" class="current">
-        <div class="toolbar">
-                    <h1>AmriS PluS 2 </h1>
-                    <a class="back" href="home.html">Home</a></div> 
-                    <div class="scroll">
-                   
-                   <form id="Amrix" action="LPR.php" class="form"> 
- <p></p> <b>
-  Insert an expression into 
-                  the             input field below:</b>
+            if (fx == "x") {
+                log("in fx==x  " + fx);
+                log(fx + " : 1");
+                return "1";
+            }
+            if ((/^[A-Za-z]+\(/.exec(fx)) && (fx[fx.length - 1] == ')')) {
+                dd = ruleFunction(fx);
+                return dd;
+            }
+            if (fx.indexOf("x") < 0) {
+                log(fx + " : 0");
+                return "0";
+            }
+            log(fx + " : unidentified");
+            return ("unidentified solution" + fx);
 
-        </p>
-        <form class="form">
-       <input id="derivBox" name="derivBox" value="(((5x-4(x/4-5)+7)))">=0
-            <br>
-            
-            <input type="button" onclick="javascript:goOnDeriv();" value="Calculate" class="redButton"></p><div id="result"></div> <br/><ol><li>
-Initial guess</li><li><input type="number" value="1" pattern="[0-9]+" id="x0"> </li><li> Maximum Error </li><li> <input type="number" value="0" pattern="[0-9]+" id="e"> </li><li> <br/>Maximum Iteration </li><li> <input type="number" value="0" pattern="[0-9]+" id="mI"> </li></ol> 
-</form>
-</p><div id="info" class="info">Loading Tips<script>inFo("solve");</script></div>
-</div></div></div>
- <script>
-      if (window.navigator.standalone) {
-        $("meta[name='apple-mobile-web-app-status-bar-style']").remove();
-      }
+        }
+
+        function cleanExpression(vexpression) {
+            while (vexpression[0] == '(' && vexpression[vexpression.length - 1] == ')') {
+                vexpression = vexpression.substring(1, vexpression.length - 1);
+            }
+            vexpression = vexpression.trim();
+            return vexpression;
+        }
+        function full(str, pat, rep) {
+            while (pat.exec(str) != null) {
+                str = str.replace(pat, rep);
+            }
+            return str;
+        }
+        function ruleAddition(expressionParts, operatorSeq) {
+            var allDer = ""
+            log("in rule addition with expressionParts= " + expressionParts + " operatorSeq " + operatorSeq);
+            log("New <br>AllDer " + allDer);
+            for (var i = 0; i < expressionParts.length; i++) {
+                tD = d(expressionParts[i]);
+                log("<b>" + tD + "</b>");
+                log("<u>Al: " + allDer + "</u>");
+                log(expressionParts[i]);
+                allDer = allDer + operatorSeq[i];
+                allDer = allDer + tD;
+                log("<b>" + allDer + "</b>");
+            }
+            log("allDer " + allDer);
+            allDer = "(" + allDer;
+            allDer += ")";
+            log("ADDRETURN");
+            log(expressionParts);
+            log(operatorSeq);
+            log(allDer);
+            return allDer;
+        }
+        function ruleMultiplication(expressionParts) {
+            log("in ruleMultiplication" + expressionParts);
+            toDir = "(";
+            ec = false;
+            for (var o in expressionParts) {
+                if (/^[0-9]+$/.exec(expressionParts[o])) {
+                    ec = true;
+                }
+            }
+            if (ec == true) {
+                var ExpressionPartsi = [];
+                coeffs = 1;
+                for (p in expressionParts) {
+                    if (/^[0-9]+$/.exec(expressionParts[p])) {
+                        coeffs = coeffs * Number(expressionParts[p]);
+                    } else {
+                        ExpressionPartsi.push(expressionParts[p]);
+                    }
+                }
+                if (ExpressionPartsi.length > 1) {
+                    DERIVATIVE = ruleMultiplication(ExpressionPartsi);
+                } else {
+                    DERIVATIVE = ExpressionPartsi[0];
+                }
+                log(ExpressionPartsi);
+                DERIVATIVE = coeffs.toString() + "*(" + cleanExpression(d(DERIVATIVE)) + ")";
+                return DERIVATIVE;
+            }
+            var lng = expressionParts.length;
+            for (var i in expressionParts) {
+                der = d(expressionParts[i]);
+                toDir += der;
+                for (var j in expressionParts) {
+                    if (i !== j) {
+                        toDir += "*";
+                        toDir += expressionParts[j];
+                    }
+                }
+                toDir = toDir + "+";
+            }
+            Deriv = toDir.substring(0, toDir.length - 1);
+            Deriv += ")";
+            return Deriv;
+        }
+        function ruleDivision(expressionParts) {
+            log("in division");
+            log(expressionParts);
+            if (expressionParts.length > 2) {
+                vlast_element = expressionParts.pop();
+
+                expressionParts = [expressionParts.join('/'), vlast_element];
+                return ruleDivision(expressionParts);
+            } else {
+                if (/^[0-9]+$/.exec(expressionParts[1])) {
+                    log("IN DES");
+                    Dert = "((1/" + expressionParts[1] + ")*(" + cleanExpression(d(expressionParts[0])) + "))";
+                    return Dert;
+                }
+                return '(' + d(expressionParts[0]) + '*' + expressionParts[1] + '-' + d(expressionParts[1]) + '*' + expressionParts[0] + ')/(' + expressionParts[1] + '*' + expressionParts[1] + ')';
+            }
+            return ("DERIVATIVE");
+        }
+
+        function rulePower(expressionParts) {
+            log("in rulePower with");
+
+            log(expressionParts);
+
+
+            if ((expressionParts.length) > 2) {
+                log("in if");
+
+                last_element = expressionParts.pop();
+                log(last_element);
+                // delete the last ^
+
+                vparts = [expressionParts.join('^'), last_element];
+                log(vparts);
+
+                return rulePower(vparts);
+
+            }
+
+            if (expressionParts[1].indexOf("x") < 0) {
+                log(expressionParts[1]);
+                // a' * b * a^(b-1) 
+
+                if (/^[0-9]+$/.exec(expressionParts[1]) !== null) {
+                    log("<u>In double</u>");
+                    a = expressionParts[0];
+                    b = expressionParts[1];
+                    n = Number(b) - 1;
+                    var DERIVATIVE = b + "*" + a + "^" + n.toString() + "*" + d(a);
+                    return DERIVATIVE;
+                } else {
+                    a = expressionParts[0];
+                    b = expressionParts[1];
+                    var DERIVATIVE = b + "*" + a + "^(" + b + "-1)*" + d(a);
+                    return DERIVATIVE;
+                }
+                // a^b * ((a'*b)/a + b'*log(a))
+                // return vparts[0]+'^'+vparts[1]+'* (('+vparts[1]+'*'+ d(vparts[0])+')/'+vparts[0] +'+ '+d(vparts[1])+'*log('+vparts[0]+'))';
+            } else {
+                a = expressionParts[0];
+                b = expressionParts[1];
+                var DERIVATIVE = a + '^' + b + '* ((' + b + '*' + d(a) + ')/' + a + '+ ' + d(b) + '*ln(' + a + '))';
+                return DERIVATIVE;
+            }
+            return ("FINAL")
+        }
+        function sin(a) {
+            return Math.sin(a);
+        }
+        function cos(a) {
+            return Math.cos(a);
+        }
+        function tan(a) {
+            return Math.tan(a);
+        }
+        function ruleFunction(exp) {
+            log("in ruleFunction with exp= " + exp);
+            var registeredFunction = {
+                'sin': ['cos(arg)*', ''],
+                'cos': ['-sin(arg)*', ''],
+                'tan': ['1/cos(arg)^2*', ''],
+                'ln': ['', '/(arg)'],
+                'log': ['', '/(arg)'],
+                'e': ['', '*e(arg)'],
+                'sqrt': ['((1/2)/((arg)^(1/2)))', ''],
+                'acos': ['-1/((1-(arg)^2)^(1/2))', "NOD"],
+                'asin': ['1/((1-(arg)^2)^(1/2))', "NOD"],
+                'atan': ['1/(1+(arg)^2)', "NOD"],
+                'sinh': ['cosh(arg)*', ''],
+                'cosh': ['sinh(arg)*', ''],
+                'tanh': ['(sech(arg)^2)*', ''],
+                'coth': ['-(csch(arg)^2)*', ''],
+                'sech': ['-sech(arg)*tanh(arg)*', ''],
+                'csch': ['-csch(arg)*coth(arg)*', ''],
+                'd': ['', ''],
+            };
+            fx = exp;
+            n = fx.indexOf('(');
+            func = fx.substring(0, n);
+            arg = fx.substring(n, fx.length);
+            arg = cleanExpression(arg);
+            if (registeredFunction[func] == undefined) {
+                return "Undefined function detected";
+            } else {
+                arT = registeredFunction[func];
+            }
+            Sumi = arT[0];
+            Tra = arT[1];
+            while (Sumi.indexOf("arg") >= 0) {
+                Sumi = Sumi.replace("arg", arg);
+            }
+            while (Tra.indexOf("arg") >= 0) {
+                Tra = Tra.replace("arg", arg);
+            }
+            Der = Sumi;
+            if (Tra !== 'NOD') {
+                Der += d(arg);
+                if (Tra !== '') {
+                    Der += Tra;
+                }
+            }
+            return Der;
+        }
+        function f(fxa, x) {
+            y = x.toString();
+            while (fxa.indexOf("(+") >= 0)
+                fxa = fxa.replace("(+", "(");
+            while (fxa.indexOf("(-") >= 0)
+                fxa = fxa.replace("(-", "(0-");
+            fxa = cleanExpression(fxa);
+            re = fxa;
+            re = full(re, /x/, y);
+            re = d_termPower(fxa);
+            re = full(re, /x/, y);
+            ev = "Result=(" + re + ");";
+            eval(ev);
+            return Number(Result);
+        }
+        function log(text) {
+            /*
+             a=document.getElementById("log").innerHTML+"<br/>";
+             a+=text;
+             document.getElementById("log").innerHTML=a;
+             */
+        }
+        function goOnDeriv() {
+            a = document.getElementById("derivBox").value;
+            deriv = " ";
+            fx = a;
+            fx = cleanExpression(fx);
+            var str = fx;
+            var n = full(str, /([0-9]+)x/, "$1*x");
+            n = full(n, /([0-9x]+)\(/, "$1*(");
+            n = full(n, /\)\(/, ")*(");
+            fx = n;
+            dep = 0;
+            for (var iter = 0; iter < fx.length; iter++) {
+                if (fx[iter] == "(")
+                    dep++;
+                if (fx[iter] == ")")
+                    dep--;
+            }
+            if (dep !== 0) {
+                alert("bracket not balanced");
+                return false;
+            }
+            if (fx.indexOf("x") < 0) {
+                alert("Variable Not Found");
+                return false;
+            }
+
+            while (fx.indexOf("(+") >= 0)
+                fx = fx.replace("(+", "(");
+            while (fx.indexOf("(-") >= 0)
+                fx = fx.replace("(-", "(0-");
+            fx = cleanExpression(fx);
+            deriv = fx;
+            Res = Newton_Raphson(fx);
+            dtr = "<h1>Result</h1><br><h2>" + Res + "</h2>";
+            document.getElementById("result").innerHTML = dtr;
+            inFo("solve");
+        }
+        function Newton_Raphson(fx) {
+            var xI = document.getElementById("x0").value;
+            x = f(xI, 9);
+            var eI = document.getElementById("e").value;
+            er = f(eI, 3);
+            var mI = document.getElementById("mI").value;
+            m = f(mI, 3);
+            if (m == 0) m = Math.pow(10, 4);
+            var iter = 0;
+            dx = d(fx);
+            while ((f(fx, x) !== 0) && (iter <= m)) {
+                xp = x;
+                x = x - ((f(fx, x)) / (f(dx, x)));
+                if (xp == x)
+                    break;
+                iter++;
+            }
+            if (iter >= 9999) return ("SOLUTION NOT FOUND");
+            return x;
+        }
+        function abs(a) {
+            if (a < 0)
+                return ((0 - 1) * a);
+            if (a > 0)
+                return a;
+            return 0;
+        }
+        function d_termPower(fx) {
+            n = fx.indexOf("^");
+            while (n >= 0) {
+                if (fx[n - 1] == ")") {
+                    i = n - 1;
+                    start = 0;
+                    depth = 1;
+                    while (i >= 0) {
+                        if (fx[i] == "(") {
+                            depth--;
+                        }
+                        if (fx[i] == ")")
+                            depth++;
+                        if (depth == 0) {
+                            start = i;
+                            i = -9;
+                        }
+                        i--;
+                    }
+                } else {
+                    start = n - 1;
+                }
+                if (fx[n + 1] == "(") {
+                    i = n + 1;
+                    start = 0;
+                    depth = 1;
+                    while (i <= fx.length) {
+                        if (fx[i] == ")") {
+                            depth--;
+                        }
+                        if (fx[i] == "(")
+                            depth++;
+                        if (depth == 0) {
+                            end = i;
+                            i = fx.length + 9;
+                        }
+                        i++;
+                    }
+                } else {
+                    end = n + 1;
+                }
+                fuTll = fx.substring(start, end + 1);
+                toR = "Math.pow(" + fx.substring(start, n) + "," + fx.substring(n + 1, end + 1) + ")";
+                fx = fx.replace(fuTll, toR);
+                n = fx.indexOf("^");
+            }
+            return fx;
+        }
     </script>
+    <script type="text/javascript" charset="utf-8">
+        $('a[target="_blank"]').bind('click', function () {
+            if (confirm('This link opens in a new window.')) {
+                return true;
+            } else {
+                return false;
+            }
+        });
+    </script>
+    <style type="text/css" media="screen">
+        #jqt.fullscreen #home.info {
+            display: none;
+        }
+
+        div#jqt #about {
+            padding: 100px 10px 40px;
+            text-shadow: rgba(0, 0, 0, 0.3) 0px -1px 0;
+            color: #999;
+            font-size: 13px;
+            text-align: center;
+            background: #161618;
+        }
+
+        div#jqt #about p {
+            margin-bottom: 8px;
+        }
+
+        div#jqt #about a {
+            color: #fff;
+            font-weight: bold;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+<div id="jqt" class="">
+    <div id="home" class="current">
+        <div class="toolbar">
+            <h1>Solve it Easy </h1>
+            <a class="back" href="index.html">Home</a></div>
+        <div class="scroll">
+
+            <form id="Amrix" class="form">
+                <p></p>
+
+
+                <form class="form">
+                    <label for="derivBox"><b>
+                        Insert an expression into
+                        the input field below:</b><br></label><input id="derivBox" name="derivBox"
+                                                                     value="(((5x-4(x/4-5)+7)))">=0
+                    <br>
+
+                    <input type="button" onclick="goOnDeriv();" value="Calculate" class="redButton">
+                    <div id="result"></div>
+                    <br/>
+                    <ol>
+                        <li>
+                            <label for="x0">Initial guess</label>
+                        </li>
+                        <li><input type="number" value="1" pattern="[0-9]+" id="x0"></li>
+                        <li> <label for="e">Maximum Error</label></li>
+                        <li><input type="number" value="0" pattern="[0-9]+" id="e"></li>
+                        <li><br/><label for="mI">Maximum Iteration</label></li>
+                        <li><input type="number" value="0" pattern="[0-9]+" id="mI"></li>
+                    </ol>
+                </form>
+                <div id="info" class="info">Loading Tips
+                    <script>inFo("solve");</script>
+                </div>
+        </div>
+    </div>
+</div>
+<script>
+    if (window.navigator.standalone) {
+        $("meta[name='apple-mobile-web-app-status-bar-style']").remove();
+    }
+</script>
 </html>
